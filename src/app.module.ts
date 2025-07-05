@@ -13,7 +13,6 @@ import { MorganMiddleware } from './middlewares';
     }),
     DatabaseModule,
     ChatModule,
-    
     AuthModule,
     UsersModule,
   ],

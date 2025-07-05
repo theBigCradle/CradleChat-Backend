@@ -1,25 +1,24 @@
+import { Logger } from '@nestjs/common';
 import {
-  SubscribeMessage,
-  WebSocketGateway,
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
-  MessageBody,
-  ConnectedSocket,
+  SubscribeMessage,
+  WebSocketGateway,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { JwtService } from '@nestjs/jwt';
-import { Logger } from '@nestjs/common';
+import { AuthService } from '../auth/auth.service';
 
 @WebSocketGateway({
   cors: {
     origin: '*', // adjust in production
   },
   namespace: '/',
-  transports: ['websocket'],
+  // transports: ['websocket', 'polling'],
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly authService: AuthService) {}
   private logger: Logger = new Logger(ChatGateway.name);
 
   async handleConnection(client: Socket) {
@@ -37,7 +36,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() payload: { token: string },
   ) {
     try {
-      const decoded = this.jwtService.verify(payload.token);
+      const decoded = this.authService.verifyAccessToken(payload.token);
       this.logger.log(`Authenticated user: ${decoded.id}`);
 
       // Store user data on socket
@@ -55,7 +54,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('sendMessage')
-  handleMessage(
+  async handleMessage(
     @ConnectedSocket() client: Socket,
     @MessageBody() message: { toUserId: string; content: string },
   ) {
@@ -63,6 +62,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (!sender) {
       return client.emit('unauthorized');
     }
+
+    // 1. Save the message to the DB
+    // const savedMessage = await this.messagesService.save({
+    //   from: sender.id,
+    //   to: message.toUserId,
+    //   content: message.content,
+    //   timestamp: new Date(),
+    // });
+
+    this.logger.log(`Decoded: ${JSON.stringify(message)}`);
+
+    // 2. Emit real-time to recipient
+    // client.to(`user:${message.toUserId}`).emit('newMessage', savedMessage);
+
+    // 3. Optionally emit back to sender for confirmation
+    // client.emit('messageSent', savedMessage);
 
     // emit to the recipient's room
     client.to(`user:${message.toUserId}`).emit('newMessage', {
