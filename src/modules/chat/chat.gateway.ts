@@ -12,7 +12,7 @@ import { AuthService } from '../auth/auth.service';
 
 @WebSocketGateway({
   cors: {
-    origin: '*', // adjust in production
+    origin: '*',
   },
   namespace: '/',
   // transports: ['websocket', 'polling'],
