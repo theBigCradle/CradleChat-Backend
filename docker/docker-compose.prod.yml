@@ -33,7 +33,7 @@ services:
     networks:
       - nginx-network
     ports:
-      - "3004:3000"
+      - "3005:3000"
 
 networks:
   nginx-network:
