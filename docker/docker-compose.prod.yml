@@ -22,8 +22,8 @@ services:
     depends_on:
       - db
     environment:
-      VIRTUAL_HOST: chat.cradle.africa.com
-      LETSENCRYPT_HOST: chat.cradle.africa.com
+      VIRTUAL_HOST: chat.cradle.africa
+      LETSENCRYPT_HOST: chat.cradle.africa
       LETSENCRYPT_EMAIL: gedeonyalakuhanda@gmail.com
       DB_HOST: db
       DB_PORT: 5432
