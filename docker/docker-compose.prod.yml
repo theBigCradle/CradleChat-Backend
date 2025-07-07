@@ -10,7 +10,7 @@ services:
     volumes:
       - pebblechat-postgres-data:/var/lib/postgresql/data
     ports:
-      - "5436:5432"
+      - '5436:5432'
     networks:
       - nginx-network
   api:
@@ -22,8 +22,8 @@ services:
     depends_on:
       - db
     environment:
-      VIRTUAL_HOST: chat.cradle.africa
-      LETSENCRYPT_HOST: chat.cradle.africa
+      VIRTUAL_HOST: pebblechat.buy-one-store.com
+      LETSENCRYPT_HOST: pebblechat.buy-one-store.com
       LETSENCRYPT_EMAIL: gedeonyalakuhanda@gmail.com
       DB_HOST: db
       DB_PORT: 5432
@@ -33,7 +33,7 @@ services:
     networks:
       - nginx-network
     ports:
-      - "3005:3000"
+      - '3005:3000'
 
 networks:
   nginx-network:
