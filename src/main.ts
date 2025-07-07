@@ -20,7 +20,10 @@ async function bootstrap() {
       'access-token',
     )
     .addSecurityRequirements('access-token')
-    .addServer('https://chat.cradle.africa/v1', 'Local development server')
+    .addServer(
+      'https://pebblechat.buy-one-store.com/v1',
+      'http://localhost:3000/v1',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
