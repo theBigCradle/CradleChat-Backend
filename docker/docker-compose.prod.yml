@@ -1,0 +1,43 @@
+services:
+  db:
+    container_name: pebblechat-db
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresql2000
+      POSTGRES_DB: bigradle_chat_db
+    volumes:
+      - pebblechat-postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+    networks:
+      - nginx-network
+  api:
+    container_name: pebblechat-api
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.prod
+    restart: always
+    depends_on:
+      - db
+    environment:
+      VIRTUAL_HOST: chat.cradle.africa.com
+      LETSENCRYPT_HOST: chat.cradle.africa.com
+      LETSENCRYPT_EMAIL: gedeonyalakuhanda@gmail.com
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgresql2000
+      DB_DATABASE: bigradle_chat_db
+    networks:
+      - nginx-network
+    ports:
+      - "3004:3000"
+
+networks:
+  nginx-network:
+    external: true
+
+volumes:
+  pebblechat-postgres-data:

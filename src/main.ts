@@ -9,7 +9,7 @@ async function bootstrap() {
   // Swagger Documentation
   const config = new DocumentBuilder()
     .setTitle('Bigcradle CHATAPP API Documentation')
-    .setDescription('API endpoints for Kelasi App')
+    .setDescription('API endpoints for Pebblechat App')
     .setVersion('1.0')
     .addBearerAuth(
       {
@@ -20,7 +20,7 @@ async function bootstrap() {
       'access-token',
     )
     .addSecurityRequirements('access-token')
-    .addServer('http://localhost:3000/v1', 'Local development server')
+    .addServer('https://chat.cradle.africa/v1', 'Local development server')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
