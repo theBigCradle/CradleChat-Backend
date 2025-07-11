@@ -3,9 +3,16 @@ import { IsNotEmpty, IsString } from 'class-validator';
 
 export class SignUpDto {
   @ApiProperty({
-    example: 'example@gmail.com',
+    example: '+234971945360',
   })
   @IsNotEmpty()
   @IsString()
-  emailAddress: string;
+  phoneNumber: string;
+
+  @ApiProperty({
+    example: '12345',
+  })
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 }
