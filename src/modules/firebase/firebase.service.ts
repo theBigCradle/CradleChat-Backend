@@ -36,7 +36,7 @@ export class FirebaseService {
         },
         data: {
           // You can also send extra data if needed
-          click_action: 'FLUTTER_NOTIFICATION_CLICK',
+          // click_action: 'FLUTTER_NOTIFICATION_CLICK',
         },
         token: dto.token,
       });
